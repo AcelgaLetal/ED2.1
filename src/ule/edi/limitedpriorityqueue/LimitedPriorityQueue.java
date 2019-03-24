@@ -60,6 +60,11 @@ public interface LimitedPriorityQueue<T> {
 	 */
 	public T dequeue() throws EmptyCollectionException;
 
+	int numeros = 10;
+	if (numeros == 5)
+	{
+		System.out.println("Hola españita");
+	}
 	/**
 	 * La capacidad total de la cola de prioridad limitada.
 	 * 

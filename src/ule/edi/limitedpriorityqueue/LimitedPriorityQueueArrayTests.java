@@ -86,18 +86,21 @@ public class LimitedPriorityQueueArrayTests {
 		pq3 = new LimitedPriorityQueueArrayImpl<String>(0, 3);
 	}
 	
-	@Test 
-	public void testEnqueueZero() throws Exception
+	@Test (expected = EmptyCollectionException.class)
+	public void testFirstNull() throws Exception
 	{
-		pq3 = new LimitedPriorityQueueArrayImpl<String>(2, 3);
-		pq5 = new LimitedPriorityQueueArrayImpl<String>(2, 3);
-		
+		pq3.first();
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testEnqueueZero() throws Exception
+	{		
 		String num = "3";
 		
 		pq3.enqueue(0, num);
 	}
 	
-	@Test 
+	@Test (expected = IllegalArgumentException.class)
 	public void testEnqueueSuperior() throws Exception
 	{
 		pq3 = new LimitedPriorityQueueArrayImpl<String>(2, 3);
@@ -107,7 +110,7 @@ public class LimitedPriorityQueueArrayTests {
 		pq3.enqueue(10, num);
 	}
 	
-	@Test 
+	@Test (expected = NullPointerException.class)
 	public void testEnqueueNull() throws Exception
 	{
 		pq3 = new LimitedPriorityQueueArrayImpl<String>(2, 3);
@@ -120,42 +123,28 @@ public class LimitedPriorityQueueArrayTests {
 	@Test 
 	public void testEnqueueFull() throws Exception
 	{
-		pq3 = new LimitedPriorityQueueArrayImpl<String>(2, 3);
-		
 		String num1 = "1";
 		String num2 = "2";
 		String num3 = "3";
-		pq3.enqueue(1, num1);
-		pq3.enqueue(2, num2);
-		pq3.enqueue(1, num3);
+		
+		Assert.assertEquals(null, pq5.enqueue(1, num1));
+		Assert.assertEquals(null, pq5.enqueue(1, num1));
+		Assert.assertEquals(null, pq5.enqueue(2, num1));
+		Assert.assertEquals(null, pq5.enqueue(2, num1));
+		Assert.assertEquals(null, pq5.enqueue(2, num2));
+		Assert.assertEquals(num3, pq5.enqueue(2, num3));
+		
+		Assert.assertEquals(null, pq3.enqueue(1, num2));
+		Assert.assertEquals(null, pq3.enqueue(1, num1));
+		Assert.assertEquals(null, pq3.enqueue(2, num2));
+		Assert.assertEquals(num2, pq3.enqueue(1, num1));
+		
+		Assert.assertEquals(num2, pq3.first());
+		
+		
 	}
 	
-	@Test 
-	public void testEnqueueFirst() throws Exception
-	{
-		pq3 = new LimitedPriorityQueueArrayImpl<String>(6, 3);
-		pq5 = new LimitedPriorityQueueArrayImpl<String>(3, 3);
-				
-		String num1 = "1";
-		String num2 = "2";
-		String num3 = "3";
-		String num4 = "4";
-		String num5 = "5";
-		String num6 = "6";
-		
-		pq3.enqueue(1, num1);
-		pq3.enqueue(2, num2);
-		
-		Assert.assertEquals(num1, pq3.first());
-		
-		pq3.enqueue(2, num4);
-		pq3.enqueue(2, num5);
-		pq5.first();
-		
-		Assert.assertEquals(pq3.enqueue(1, num3), num5.toString()); 	
-	}
-	
-	@Test 
+	@Test (expected = EmptyCollectionException.class)
 	public void testDequeue() throws Exception
 	{
 		pq3 = new LimitedPriorityQueueArrayImpl<String>(3, 3);

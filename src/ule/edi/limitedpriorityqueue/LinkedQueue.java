@@ -25,6 +25,7 @@ public class LinkedQueue<T> implements QueueADT<T> {
 		// TODO Auto-generated method stub
 		front = new Node<T>();
 		rear = new Node <T>();
+		count = 0;
 	 } 
 	
 	@Override
@@ -35,9 +36,16 @@ public class LinkedQueue<T> implements QueueADT<T> {
 		{
 			Node<T> nuevo = new Node<T>(element);
 			
-			if(front.element ==  null)
+			if(isEmpty())
 			{
 				front = nuevo;
+				rear = nuevo;
+				count++;
+			}
+			else if(count == 1)
+			{
+				rear = nuevo;
+				front.next = rear;
 				count++;
 			}
 			else
@@ -59,13 +67,11 @@ public class LinkedQueue<T> implements QueueADT<T> {
 	{
 		// TODO Auto-generated method stub
 		
-		T aux = front.element;
+		T aux = first();
 		front = front.next;
 		count --;
 		
-		return aux;
-
-		
+		return aux;	
 	}
 
 	@Override
@@ -77,7 +83,7 @@ public class LinkedQueue<T> implements QueueADT<T> {
 	@Override
 	public boolean isEmpty() {
 		 // TODO Auto-generated method stub
-		if(front.element == null)
+		if(count == 0)
 		{
 			return true;
 		}
@@ -96,17 +102,37 @@ public class LinkedQueue<T> implements QueueADT<T> {
 	  // TODO Auto-generated method stub
 
 		T devolver = rear.element;
-		Node<T> aux = front.next;
-		Node<T> nodAnt = front;
 		
-		while(aux != rear)
+		if(front.next == null)
 		{
-			aux = aux.next;
-			nodAnt = nodAnt.next;
+			devolver = front.element;
+			front = null;
+			count--;
 		}
-		nodAnt.next = null;
-		count--;
-		return devolver;		
+		else if(front.next.next == null)
+		{	
+			devolver = front.next.element;
+			front.next = null;
+			count--;
+		}
+		else
+		{
+			Node<T> iter = front.next;
+			Node<T> aux = front;
+			iter.next = front.next.next;
+			aux.next = front.next;
+			
+			while(iter.next.next != null)
+			{
+				iter.next = iter.next.next;
+				aux.next = aux.next.next;
+			}
+			//devolver = iter.next.element;
+			iter.next = null;
+			rear = aux.next;
+			count--;
+		}
+		return devolver;
 		
 	}
 

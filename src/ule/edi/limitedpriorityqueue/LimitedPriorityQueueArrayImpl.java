@@ -76,32 +76,28 @@ public class LimitedPriorityQueueArrayImpl<T> implements LimitedPriorityQueue<T>
 		{
 			throw new IllegalArgumentException("La prioridad introducida está por encima de las existentes");
 		}
+		
+		colas.get(p - 1).enqueue(element);
+				
 		if(isFull())
 		{
 			for(int i = npriorities - 1; i >= 0; i--)
 			{
 				if(colas.get(i).isEmpty() == false)
 				{
-					if(i != p)
-					{
-						selection = i;
-						break;
-					}
+					selection = i;
+					break;
 				}
 			}
-			
 			elemAux = colas.get(selection).dequeueLast();
-			
-			return elemAux;
+			count--;
 		}
-		else
-		{
-			colas.get(p - 1).enqueue(element);
-			count++;
-			return null;
-		}
-  
+		count++;
+		
+		return elemAux;
+				 
 	}
+	
 
 
 	@Override
@@ -170,23 +166,41 @@ public class LimitedPriorityQueueArrayImpl<T> implements LimitedPriorityQueue<T>
 
 	
 	@Override
-	public String toString() {
-		if (! this.isEmpty()) {
+	public String toString()
+	{
+	    boolean separator=false;
+
+	    if (!this.isEmpty())
+	    {
 			StringBuffer rx = new StringBuffer();
 			rx.append("[");
-			for (int n = 0; n < this.npriorities; ++n) {
-				rx.append("( Priority:"+(n+1)+" (");
-				rx.append(colas.get(n).toString());
-				rx.append(")), ");
-			}
-			rx.delete(rx.length() - 2, rx.length());
-			rx.append("]");
-			return rx.toString();
-		} else {
-			return "[]";
-		}
-	}
 
+			for (int n = 0; n < this.npriorities; ++n)
+			{
+				if (!colas.get(n).isEmpty())
+				{
+					rx.append("( Priority:"+(n+1)+" ("); 
+					rx.append(colas.get(n).toString());
+					rx.append(")), ");
+
+					separator=true;
+				}       
+			}
+
+			if (separator) 
+			{
+				rx.delete(rx.length() - 2,rx.length());
+				rx.append("]");
+
+				return rx.toString();
+			}
+			else
+			{
+				return "[]";
+			}
+		}
+	    return "[]";
+	}
 };
   
 

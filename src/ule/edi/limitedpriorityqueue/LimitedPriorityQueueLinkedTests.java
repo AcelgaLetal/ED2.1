@@ -10,8 +10,6 @@ public class LimitedPriorityQueueLinkedTests {
 	
 	private LimitedPriorityQueueLinkedImpl<String> pq3;
 	private LimitedPriorityQueueLinkedImpl<String> pq5;
-	private LimitedPriorityQueueLinkedImpl<String> pq6;
-	private LimitedPriorityQueueLinkedImpl<String> pq7;
 	
 	
 	public LimitedPriorityQueueLinkedTests() {
@@ -23,8 +21,6 @@ public class LimitedPriorityQueueLinkedTests {
 	public void testBefore() throws Exception{
 	    pq3 = new LimitedPriorityQueueLinkedImpl<String>(3); // limitado a 3 elementos
 	    pq5 = new LimitedPriorityQueueLinkedImpl<String>(5); // limitado a 5 elementos
-	    pq6 = new LimitedPriorityQueueLinkedImpl<String>(1); // limitado a 5 elementos
-	    pq7 = new LimitedPriorityQueueLinkedImpl<String>(2); // limitado a 5 elementos
 	    Assert.assertEquals(3, pq3.getCapacity());
 	    Assert.assertEquals(0, pq3.getSize());
 	}
@@ -86,44 +82,43 @@ public class LimitedPriorityQueueLinkedTests {
 		Assert.assertEquals(elem, pq3.first());
 	}
 	
-	@Test
+	@Test (expected = IllegalArgumentException.class)
 	public void testEnqueue() throws Exception
 	{
+		
 		String elem = "1";
 		String elem2 = "2";
-		String elem3 = "1";
-		String elem4 = "2";
-		String elem5 = "1";
-		String elem6 = "2";
+		String elem3 = "3";
+		String elem4 = "4";
+		String elem5 = "5";
+		String elem6 = "6";
+		String elem7 = "7";
 		
-		pq5.enqueue(3, elem);
-		pq5.enqueue(2, elem2);
-		pq5.enqueue(4, elem3);
-		pq5.enqueue(5, elem4);
-		pq5.enqueue(1, elem5);
-		pq5.enqueue(4, elem6);
+		Assert.assertEquals(null, pq5.enqueue(1, elem));
+		Assert.assertEquals(null, pq5.enqueue(3, elem2));
+		Assert.assertEquals(null, pq5.enqueue(2, elem3));
+		Assert.assertEquals(null, pq5.enqueue(6, elem4));
+		Assert.assertEquals(null, pq5.enqueue(5, elem5));
+		Assert.assertEquals(elem6, pq5.enqueue(7, elem6));
 		
-		pq3.enqueue(2, elem);
-		pq3.enqueue(4, elem2);
-		pq3.enqueue(3, elem3);
-		
-		Assert.assertEquals(elem, pq5.dequeue());
-		
-		pq7.enqueue(3, elem);
-		pq7.enqueue(2, elem2);
-		pq7.enqueue(3, elem3);
-		
-		pq6.dequeue();
-				
+		pq3.enqueue(0, elem);
 	}
-	@Test
+	@Test (expected = EmptyCollectionException.class)
 	public void testDequeue() throws Exception
 	{
 		String elem = "1";
 		String elem2 = "2";
 		String elem3 = "d";
-		pq6.enqueue(3, elem);
-		pq6.enqueue(2, elem2);
+		pq3.enqueue(3, elem);
+		pq3.enqueue(2, elem2);
+		
+		Assert.assertEquals(elem2, pq3.dequeue());
+		
+		pq3.enqueue(2, elem);
+		pq3.enqueue(3, elem);
+		pq3.enqueue(4, elem);
+		
+		pq5.dequeue();
 		
 		
 		//
